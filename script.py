@@ -1,15 +1,11 @@
 import sys
 from getpass import getpass
-from time import sleep
 from settings import *
 
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
-from telethon.errors.rpc_error_list import UsernameNotOccupiedError
-from telethon.errors.rpc_error_list import FloodWaitError
-from telethon.tl.functions.channels import GetParticipantsRequest
+from telethon.errors.rpc_error_list import UsernameNotOccupiedError, FloodWaitError
 from telethon.tl.functions.contacts import ResolveUsernameRequest
-from telethon.tl.types import ChannelParticipantsSearch, InputChannel
 
 
 def get_chat_info(username, client):

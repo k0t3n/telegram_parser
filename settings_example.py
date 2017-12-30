@@ -2,3 +2,4 @@ API_ID = 12345
 API_HASH = 'cc512bcdcqwerty123456'
 PHONE = '+321234567'
 LIMIT = 100
+CHANNEL_NAME = 'durov'

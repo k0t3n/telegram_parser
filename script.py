@@ -16,7 +16,7 @@ from telethon.tl.types import InputPeerChannel, InputChannel
 
 def get_chat_messages(channel_name, client, offset=0):
     """
-    Функция для получения сообщений из чата. Максимально 100 сообщений за раз
+    Функция для получения сообщений из чата. Максимально 100 сообщений за раз.
     :param offset: смещение
     :param channel_name: имя канала (например durov)
     :param client: объект клиента

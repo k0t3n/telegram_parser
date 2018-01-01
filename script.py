@@ -1,34 +1,44 @@
 import sys
 from getpass import getpass
 
-import time
-
 from settings import *
+
+from database.models import ChannelMessage, export_channels
 
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
 from telethon.errors.rpc_error_list import UsernameNotOccupiedError, FloodWaitError
 from telethon.tl.functions.contacts import ResolveUsernameRequest
-from telethon.tl.functions.messages import GetHistoryRequest, GetFullChatRequest
+from telethon.tl.functions.messages import GetHistoryRequest
 from telethon.tl.functions.channels import GetFullChannelRequest
 from telethon.tl.types import InputPeerChannel, InputChannel
 
 
-def get_chat_messages(channel_name, client, offset=0):
+def get_all_channel_messages(channel_name, client):
     """
-    Функция для получения сообщений из чата. Максимально 100 сообщений за раз.
-    :param offset: смещение
+    Функция для получения всех сообщений из канала. Максимально 100 сообщений за раз.
     :param channel_name: имя канала (например durov)
     :param client: объект клиента
-    :return: объект сообщений
+    :return: объекты сообщений
     """
     chat_object = get_chat_info(channel_name, client)
     input_channel = InputChannel(chat_object['chat_id'], chat_object['access_hash'])
     channel = client.invoke(GetFullChannelRequest(input_channel)).__dict__
     chat_peer = InputPeerChannel(channel['full_chat'].id, chat_object['access_hash'])
-    messages = client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, LIMIT, 0, 0))
 
-    return messages.messages
+    all_messages = []
+    offset = 0
+    new_messages = client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, LIMIT, 0, 0)).messages
+
+    while len(new_messages) is not 0:
+        offset += 100
+
+        for new_message in new_messages:
+            all_messages.append(new_message.__dict__)
+
+        new_messages = client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, LIMIT, 0, 0)).messages
+
+    return all_messages
 
 
 def get_chat_info(username, client):
@@ -79,21 +89,22 @@ def auth(app_id, app_hash):
 def main():
     client = auth(API_ID, API_HASH)
 
-    offset = 0
-    messages = get_chat_messages(CHANNEL_NAME, client, offset)
-    posts_count = len(messages)
+    channels = export_channels()
 
-    while len(messages) != 0:
-        offset += 100
-        messages = get_chat_messages(CHANNEL_NAME, client, offset)
-        posts_count += len(messages)
-        time.sleep(1)
-
-    print(posts_count)
-
-    # print(len(messages))
-    # for message in messages:
-    #     print(message.message)
+    for channel in channels:
+        messages = get_all_channel_messages(channel.username, client)
+        for message in messages:
+            try:
+                ChannelMessage.get_or_create(
+                    channel_id=channel._get_pk_value(),
+                    message_id=message['id'],
+                    message=message['message'],
+                    date=message['date'],
+                    media=message['media']
+                )
+            except KeyError:
+                pass
+        print('added')
 
     print('Done!')
 

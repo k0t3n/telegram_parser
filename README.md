@@ -16,7 +16,7 @@
  5. Перейти в папку проекта
  `cd telegram_parser/`
  6. Установить зависимости (при необходимости создать виртуальное окружение)
- `pip install -r requirements.txt`
+ `pip3 install -r requirements.txt`
  7. Скопировать settings_example.py
  `cp settings_example.py settings.py`
  8. Настроить settings.py, ввести данные от своей БД

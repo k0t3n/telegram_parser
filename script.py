@@ -93,6 +93,7 @@ def main():
 
     for channel in channels:
         messages = get_all_channel_messages(channel.username, client)
+
         for message in messages:
             try:
                 ChannelMessage.get_or_create(
@@ -100,11 +101,10 @@ def main():
                     message_id=message['id'],
                     message=message['message'],
                     date=message['date'],
-                    media=message['media']
+                    media='Yes' if message['media'] else 'No'
                 )
             except KeyError:
                 pass
-        print('added')
 
     print('Done!')
 

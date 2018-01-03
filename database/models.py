@@ -1,7 +1,15 @@
 import datetime
 from peewee import *
+from settings import *
 
-db = SqliteDatabase('test.db')
+db = MySQLDatabase(
+    DB_NAME,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    host=DB_HOST,
+    port=DB_PORT,
+    charset=DB_CHARSET,
+)
 
 
 class Channel(Model):
@@ -16,7 +24,7 @@ class ChannelMessage(Model):
     message_id = IntegerField()
     message = TextField()
     date = DateTimeField()
-    media = TextField(null=True)
+    media = TextField()
 
     class Meta:
         database = db

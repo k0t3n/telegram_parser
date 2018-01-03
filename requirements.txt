@@ -1,5 +1,6 @@
 peewee==2.10.2
 pyaes==1.6.1
 pyasn1==0.4.2
+PyMySQL==0.8.0
 rsa==3.4.2
 Telethon==0.16.0.3

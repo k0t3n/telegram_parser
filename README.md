@@ -15,12 +15,13 @@
  `git clone https://github.com/k0t3n/telegram_parser.git)`
  5. Перейти в папку проекта
  `cd telegram_parser/`
- 6. Установить pip3 и virtualenv
+ 6. Установить pip3 и virtualenv, создать виртуальное окружение
  `sudo apt install python3-setuptools`
+ `pip3 install virtualenv`
  `virtualenv venv`
  7. Активировать виртуальное окружение
  `source venv/bin/activate`
- 6. Установить зависимости (при необходимости создать виртуальное окружение)
+ 6. Установить зависимости
  `pip install -r requirements.txt`
  7. Скопировать settings_example.py
  `cp settings_example.py settings.py`
@@ -30,12 +31,12 @@
  `python3 migrate.py`
  10. Добавить чат/канал в таблицу source через phpmyadmin.
  11. Провести тестовый запуск скрипта. Возможно, вас попросят ввести проверочный код и пароль от аккаунта. В дальнейшем скрипт их запомнит и не будет требовать. 
-`python3 script.py`
+`python script.py`
  12. Добавить скрипт в crontab
  `sudo crontab -e`
  Выбираем 2 - nano
  В конец файла вставить строчку предварительно отредактировав:
- ` */2 * * * * /путь/до/файла/run.sh`
+ ` */2 * * * * cd /путь/до/файла && sh run.sh`
  Где /2 - запуск скрипта раз в 2 минуты.
  Жмем ctrl+x, yes и Enter
  

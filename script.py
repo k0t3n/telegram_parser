@@ -3,7 +3,7 @@ from getpass import getpass
 
 from settings import *
 
-from database.models import ChannelMessage, export_channels
+from database.models import Message, export_sources
 
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
@@ -11,10 +11,10 @@ from telethon.errors.rpc_error_list import UsernameNotOccupiedError, FloodWaitEr
 from telethon.tl.functions.contacts import ResolveUsernameRequest
 from telethon.tl.functions.messages import GetHistoryRequest
 from telethon.tl.functions.channels import GetFullChannelRequest
-from telethon.tl.types import InputPeerChannel, InputChannel
+from telethon.tl.types import InputPeerChannel, InputChannel, InputPeerChat
 
 
-def get_all_channel_messages(channel_name, client):
+def get_all_chat_messages(channel_name, client):
     """
     Функция для получения всех сообщений из канала. Максимально 100 сообщений за раз.
     :param channel_name: имя канала (например durov)
@@ -28,15 +28,15 @@ def get_all_channel_messages(channel_name, client):
 
     all_messages = []
     offset = 0
-    new_messages = client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, LIMIT, 0, 0)).messages
+    new_messages = client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, 0, 0, 0)).messages
 
-    while len(new_messages) is not 0:
+    while len(new_messages) is not 0 and offset <= 5000:
         offset += 100
 
         for new_message in new_messages:
             all_messages.append(new_message.__dict__)
 
-        new_messages = client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, LIMIT, 0, 0)).messages
+        new_messages = client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, 0, 0, 0)).messages
 
     return all_messages
 
@@ -75,29 +75,32 @@ def auth(app_id, app_hash):
             client.send_code_request(PHONE)
             print('Sending a code...')
             client.sign_in(PHONE, code=input('Enter code: '))
-            print('Successfully!')
         except FloodWaitError as FloodError:
             print('Flood wait: {}.'.format(FloodError))
             sys.exit()
         except SessionPasswordNeededError:
             client.sign_in(password=getpass('Enter password: '))
-            print('Successfully!')
 
     return client
 
 
 def main():
+    print('Starting script...')
     client = auth(API_ID, API_HASH)
+    print('Auth - successfully!')
 
-    channels = export_channels()
+    sources = export_sources()
+    print('Getting sourses...\nGot {} sources'.format(len(sources)))
 
-    for channel in channels:
-        messages = get_all_channel_messages(channel.username, client)
+    for source in sources:
+        print('Getting {} messages...'.format(source.username))
+        messages = get_all_chat_messages(source.username, client)
+        print('Got {} messages.\nSaving {} messages...'.format(len(messages), source.username))
 
         for message in messages:
             try:
-                ChannelMessage.get_or_create(
-                    channel_id=channel._get_pk_value(),
+                Message.get_or_create(
+                    source_id=source._get_pk_value(),
                     message_id=message['id'],
                     message=message['message'],
                     date=message['date'],

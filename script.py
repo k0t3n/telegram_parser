@@ -32,7 +32,7 @@ def get_all_chat_messages(channel_name, client):
     offset = 0
     new_messages = client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, 0, 0, 0)).messages
 
-    while len(new_messages) is not 0 and offset <= 5000:
+    while len(new_messages) is not 0 and offset <= LIMIT:
         offset += 100
 
         for new_message in new_messages:

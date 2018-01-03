@@ -15,8 +15,13 @@
  `git clone https://github.com/k0t3n/telegram_parser.git)`
  5. Перейти в папку проекта
  `cd telegram_parser/`
+ 6. Установить pip3 и virtualenv
+ `sudo apt install python3-setuptools`
+ `virtualenv venv`
+ 7. Активировать виртуальное окружение
+ `source venv/bin/activate`
  6. Установить зависимости (при необходимости создать виртуальное окружение)
- `pip3 install -r requirements.txt`
+ `pip install -r requirements.txt`
  7. Скопировать settings_example.py
  `cp settings_example.py settings.py`
  8. Настроить settings.py, ввести данные от своей БД

@@ -33,11 +33,14 @@ class Message(Model):
         database = db
 
 
-def export_sources():
+def export_sources(need_history=False):
     """
     Функция для экспорта списка каналов из базы данных
     :return: список каналов
     """
-    db_channels = Source.select()
+    if need_history:
+        db_channels = Source.select().where(need_history=True)
+    else:
+        db_channels = Source.select()
 
     return db_channels

@@ -20,7 +20,7 @@ def main():
     client = ApiHandler(API_ID, API_HASH)
     print('Auth - successfully!')
 
-    sources = export_sources()
+    sources = export_sources(need_history=FULL_HISTORY)
     print('Getting sourses...\nGot {} sources'.format(len(sources)))
 
     for source in sources:

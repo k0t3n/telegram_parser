@@ -35,9 +35,9 @@
  12. Добавить скрипт в crontab
  `sudo crontab -e`
  Выбираем 2 - nano
- В конец файла вставить строчку предварительно отредактировав:
- ` */2 * * * * cd /путь/до/файла && sh run.sh`
- Где /2 - запуск скрипта раз в 2 минуты.
+ В конец файла вставить строчки, предварительно отредактировав:
+ ` */2 * * * * cd /путь/до/telegram_parser/crontab_scripts && sh fast_script.sh`
+ ` 0 0 * * * cd /путь/до/telegram_parser/crontab_scripts && sh slow_script.sh`
  Жмем ctrl+x, yes и Enter
  
  13. Проверить, что crontab настроен верно можно командой:

@@ -16,6 +16,7 @@ db = MySQLDatabase(
 
 class Source(Model):
     username = CharField(unique=True)
+    need_history = BooleanField(default=False)
 
     class Meta:
         database = db

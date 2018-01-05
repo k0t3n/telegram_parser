@@ -1,3 +1,4 @@
+import sys
 import argparse
 
 from telegram import ApiHandler

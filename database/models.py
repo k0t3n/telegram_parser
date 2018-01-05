@@ -39,8 +39,8 @@ def export_sources(need_history=False):
     :return: список каналов
     """
     if need_history:
-        db_channels = Source.select().where(need_history=True)
+        db_channels = Source.filter(need_history=True)
     else:
-        db_channels = Source.select()
+        db_channels = Source.filter(need_history=False)
 
     return db_channels

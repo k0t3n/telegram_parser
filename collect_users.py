@@ -20,7 +20,10 @@ def main():
 
     for message in messages:
         if message.from_id and message.from_id not in user_ids:
-            user_ids.append(message.from_id)
+            try:
+                user_ids.append(message.from_id)
+            except Exception:
+                pass
 
     print('Got {} unique users'.format(len(user_ids)))
 

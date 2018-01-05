@@ -56,7 +56,7 @@ class ApiHandler:
 
         all_messages = []
         offset = 0
-        new_messages = self.client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, 0, 0, 0)).messages
+        new_messages = self.client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, LIMIT, 0, 0,)).messages
 
         if all:
             while len(new_messages) is not 0 and offset < 5000:
@@ -65,7 +65,7 @@ class ApiHandler:
                 for new_message in new_messages:
                     all_messages.append(new_message.__dict__)
 
-                new_messages = self.client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, 0, 0, 0)).messages
+                new_messages = self.client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, LIMIT, 0, 0)).messages
                 time.sleep(1)
 
         else:

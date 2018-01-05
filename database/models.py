@@ -28,6 +28,17 @@ class Message(Model):
     message = TextField()
     date = DateTimeField()
     media = TextField()
+    from_id = IntegerField()
+
+    class Meta:
+        database = db
+
+
+class User(Model):
+    user_id = IntegerField()
+    username = CharField(null=True)
+    first_name = CharField()
+    last_name = CharField(null=True)
 
     class Meta:
         database = db

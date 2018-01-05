@@ -1,4 +1,3 @@
-import sys
 import argparse
 
 from telegram import ApiHandler
@@ -41,7 +40,8 @@ def main():
                     message_id=message['id'],
                     message=message['message'],
                     date=message['date'],
-                    media='Yes' if message['media'] else 'No'
+                    media='Yes' if message['media'] else 'No',
+                    from_id=message['from_id']
                 )
             except KeyError:
                 pass

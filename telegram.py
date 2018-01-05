@@ -15,7 +15,8 @@ from telethon.errors.rpc_error_list import UsernameNotOccupiedError, FloodWaitEr
 from telethon.tl.functions.contacts import ResolveUsernameRequest
 from telethon.tl.functions.messages import GetHistoryRequest
 from telethon.tl.functions.channels import GetFullChannelRequest
-from telethon.tl.types import InputPeerChannel, InputChannel
+from telethon.tl.functions.users import GetUsersRequest, GetFullUserRequest
+from telethon.tl.types import InputPeerChannel, InputChannel, InputUser
 
 
 class ApiHandler:
@@ -90,3 +91,16 @@ class ApiHandler:
             'access_hash': chat.chats[0].access_hash
         }
         return result
+
+    def get_users(self, user_ids):
+        """
+        Функция для получения информации о пользователях
+        :param user_ids: список id пользователей
+        :return:
+        """
+        users = []
+
+        for user_id in user_ids:
+            users.append(self.client.get_entity(user_id).__dict__)
+
+        return users

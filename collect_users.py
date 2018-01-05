@@ -19,7 +19,7 @@ def main():
     user_ids = []
 
     for message in messages:
-        if message.from_id not in user_ids:
+        if message.from_id and message.from_id not in user_ids:
             user_ids.append(message.from_id)
 
     print('Got {} unique users'.format(len(user_ids)))

@@ -38,6 +38,7 @@
  В конец файла вставить строчки, предварительно отредактировав:
  ` */2 * * * * cd /путь/до/telegram_parser/crontab_scripts && sh fast_script.sh`
  ` 0 0 * * * cd /путь/до/telegram_parser/crontab_scripts && sh slow_script.sh`
+ ` 0 0 * * * cd /путь/до/telegram_parser/crontab_scripts && sh users_script.sh`
  Жмем ctrl+x, yes и Enter
  
  13. Проверить, что crontab настроен верно можно командой:

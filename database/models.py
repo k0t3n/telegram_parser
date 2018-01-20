@@ -58,5 +58,8 @@ def export_sources(need_history=False):
             .order_by(-Source.last_updated)
             .filter(need_history=False)
             )
+        for channel in db_channels:
+            channel.last_updated = DateTimeField(datetime.datetime.now())
+            channel.save()
 
     return db_channels

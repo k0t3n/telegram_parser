@@ -59,7 +59,7 @@ class ApiHandler:
         new_messages = self.client.invoke(GetHistoryRequest(chat_peer, 0, None, offset, LIMIT, 0, 0, )).messages
 
         if all:
-            while len(new_messages) is not 0 and offset < 5000:
+            while len(new_messages) is not 0 and offset < MESSAGES_LIMIT:
                 offset += 100
 
                 for new_message in new_messages:

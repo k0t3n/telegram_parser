@@ -17,6 +17,7 @@ db = MySQLDatabase(
 class Source(Model):
     username = CharField(unique=True)
     need_history = BooleanField(default=False)
+    last_updated = DateTimeField(default=datetime.datetime.now())
 
     class Meta:
         database = db
@@ -52,6 +53,10 @@ def export_sources(need_history=False):
     if need_history:
         db_channels = Source.filter(need_history=True)
     else:
-        db_channels = Source.filter(need_history=False)
+        db_channels = (Source
+            .select()
+            .order_by(-Source.last_updated)
+            .filter(need_history=False)
+            )
 
     return db_channels

@@ -1,8 +1,6 @@
-import argparse
-
 from telegram import ApiHandler
 
-from database.models import Message, User, export_sources
+from database.models import Message, User
 
 from settings import *
 
